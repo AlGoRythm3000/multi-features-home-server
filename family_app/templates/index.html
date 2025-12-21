@@ -3,41 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family App</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .card { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
-        .tag { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; }
-    </style>
+    <title>Site de la maison</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <h1>Le Mur des Pépites</h1>
+<div class="container">
+    
+    <h1>Bienvenue à la Maison 🏠</h1>
 
-    <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-        <h3>J'ai vu un truc sympa !</h3>
-        <form action="/add_reco" method="POST">
-            <input type="text" name="auteur" placeholder="Qui es-tu ?" required>
-            <select name="type">
-                <option value="Film">Film</option>
-                <option value="Série">Série</option>
-                <option value="Expo">Expo</option>
-                <option value="Livre">Livre</option>
-            </select>
-            <input type="text" name="titre" placeholder="C'était quoi ?" required style="width: 50%;">
-            <button type="submit">Partager</button>
-        </form>
+    <div class="services-grid">
+        <a href="http://rock-4d-spi.local:2283" class="service-card immich">
+            <span class="service-icon">📸</span>
+            <h3>Photos</h3>
+            <p>Immich</p>
+        </a>
+
+        <a href="http://rock-4d-spi.local:9925" class="service-card mealie">
+            <span class="service-icon">🍲</span>
+            <h3>Cuisine</h3>
+            <p>Recettes & Courses</p>
+        </a>
+
+        <a>
+            <span class="service-icon">📰</span>
+            <h3>Agenda partagé</h3>
+            <p>en travaux ...</p>
+        </a>
     </div>
 
-    <div id="recos-list">
+    <h2>Le mur des pépites ✨</h2>
+    
+    <div class="add-box">
+        <form action="/add_reco" method="POST">
+              <div class="form-row">
+                <select name="auteur" required style="flex: 0 0 150px;">
+                    <option value="" disabled selected>C'est qui ?</option>
+                    {% for user in users %}
+                        <option value="{{ user }}">{{ user }}</option>
+                    {% endfor %}
+                </select>
+
+                <select name="type" style="flex: 0 0 120px;">
+                    <option value="Film">?? Film</option>
+                    <option value="Série">?? Série</option>
+                    <option value="Expo">?? Expo</option>
+                    <option value="Livre">?? Livre</option>
+                    <option value="Article">?? Article</option>
+                    <option value="Autre">?? Autre</option>
+                </select>
+                <input type="text" name="titre" placeholder="Titre..." required>
+            </div>
+
+            <div class="form-row">
+                <input type="url" name="lien" placeholder="Lien http://... (optionnel)">
+                <input type="text" name="desc" placeholder="Pourquoi c'est bien ?">
+            </div>
+
+            <div class="form-row" style="align-items: center; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #ddd;">
+                <span style="margin-right: 10px; font-weight: bold; color: #555;">Pour qui ? :</span>
+                {% for user in users %}
+                <label style="margin-right: 15px; cursor: pointer;">
+                    <input type="checkbox" name="tags" value="{{ user }}"> {{ user }}
+                </label>
+                {% endfor %}
+                <button type="submit" style="margin-left: auto;">Partager</button>
+            </div>
+
+	</form>
+    </div>
+
+    <div class="reco-list">
         {% for reco in recos %}
-        <div class="card">
-            <strong>{{ reco.auteur }}</strong> recommande un <span class="tag">{{ reco.type }}</span> :
-            <h3>{{ reco.titre }}</h3>
-            <small>Ajouté le {{ reco.date }}</small>
+        <div class="reco-card">
+            <div class="reco-content">
+                <div class="reco-meta">
+                    <span class="tag">{{ reco.type }}</span> 
+                    proposé par <strong>{{ reco.auteur }}</strong> le {{ reco.date_display }}
+                </div>
+                <h3>
+                    {% if reco.lien %}
+                        <a href="{{ reco.lien }}" target="_blank" class="reco-link">{{ reco.titre }} 🔗</a>
+                    {% else %}
+                        {{ reco.titre }}
+                    {% endif %}
+                </h3>
+                {% if reco.tags %}
+                <div style="margin-top: 5px;">
+                    {% for tag in reco.tags %}
+                        <span class="tag-user">@{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if reco.desc %}
+                    <p style="margin: 5px 0 0 0; font-style: italic;">"{{ reco.desc }}"</p>
+                {% endif %}
+            </div>
         </div>
         {% endfor %}
     </div>
+
+</div>
 
 </body>
 </html>

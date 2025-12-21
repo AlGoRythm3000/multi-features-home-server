@@ -1,0 +1,109 @@
+:root {
+    --primary: #4A90E2; /* Un bleu moderne */
+    --bg-color: #f4f6f8;
+    --card-bg: #ffffff;
+    --text-color: #333;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+}
+
+.tag-user {
+    background-color: #ffeba7;
+    color: #8a6d3b;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1, h2 { text-align: center; color: #2c3e50; }
+
+/* --- SECTION SERVICES (Les 3 carrés) --- */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.service-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 4px solid transparent;
+}
+
+.service-card:hover { transform: translateY(-5px); }
+.service-card.immich { border-bottom-color: #8e44ad; } /* Violet */
+.service-card.mealie { border-bottom-color: #27ae60; } /* Vert */
+.service-card.news { border-bottom-color: #e67e22; } /* Orange */
+
+.service-icon { font-size: 2em; margin-bottom: 10px; display: block; }
+
+/* --- SECTION FORMULAIRE --- */
+.add-box {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.form-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    flex: 1; /* Prend toute la place dispo */
+}
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover { background-color: #357abd; }
+
+/* --- SECTION LISTE PEPITES --- */
+.reco-list { display: flex; flex-direction: column; gap: 15px; }
+
+.reco-card {
+    background: var(--card-bg);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reco-content h3 { margin: 0 0 5px 0; font-size: 1.1em; }
+.reco-meta { font-size: 0.85em; color: #666; }
+.tag { background: #eef2f5; padding: 2px 8px; border-radius: 4px; font-weight: bold; color: var(--primary); }
+.reco-link { color: var(--primary); text-decoration: none; font-weight: bold; }
+
+/* Mobile : on empile tout */
+@media (max-width: 600px) {
+    .reco-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
