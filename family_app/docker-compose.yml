@@ -1,0 +1,10 @@
+services:
+  family-app:
+    # On construit l'image nous-mêmes à partir du dossier courant
+    build: . 
+    container_name: family-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    restart: always
