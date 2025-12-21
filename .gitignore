@@ -1,0 +1,15 @@
+# Ignorer les données de base de données
+postgres-data/
+
+# Ignorer les photos uploadées
+library/
+uploads/
+
+# Ignorer les fichiers de configuration secrets (mots de passe)
+.env
+
+# Ignorer les fichiers systèmes
+.DS_Store
+
+# ignorer le postgres (la bdd de photo)
+postgres/ 
