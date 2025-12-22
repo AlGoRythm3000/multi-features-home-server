@@ -1,42 +1,16 @@
-[
-    {
-        "titre": "Pi\u00e8ce de th\u00e9\u00e2tre sympa ! ",
-        "type": "Autre",
-        "auteur": "Gabriel",
-        "lien": "",
-        "desc": "tr\u00e8s dr\u00f4le",
-        "tags": [
-            "Papa",
-            "Maman"
-        ],
-        "date_display": "21/12/2025",
-        "date_obj": "2025-12-21 22:02:01"
-    },
-    {
-        "titre": "salut",
-        "type": "Film",
-        "auteur": "cded",
-        "lien": "",
-        "desc": "",
-        "date_display": "21/12/2025",
-        "date_obj": "2025-12-21 21:12:04"
-    },
-    {
-        "titre": "Exposition sur VH",
-        "type": "Expo",
-        "auteur": "Gabriel",
-        "lien": "https://expo.paris/exposition/hugo-decorateur-maison-victor-hugo-2025",
-        "desc": "\u00e0 la maison de Victor Hugo",
-        "date_display": "21/12/2025",
-        "date_obj": "2025-12-21 21:01:32"
-    },
-    {
-        "titre": "Article the Guardian sur le conflit en Ukraine !! ",
-        "type": "Article",
-        "auteur": "Gabriel",
-        "lien": "https://www.theguardian.com/world/2025/dec/21/alarm-over-exploding-rise-in-use-of-sanctions-busting-shadow-fleet",
-        "desc": "int\u00e9ressant",
-        "date_display": "21/12/2025",
-        "date_obj": "2025-12-21 20:59:53"
-    }
-]
+{
+    "recos": [],
+    "agenda": [
+        {
+            "id": "12343e90-e4cd-4722-8b85-cecbdf23a7f7",
+            "titre": "rdv coiffeur",
+            "date": "2025-12-18",
+            "heure": "06:00",
+            "desc": "nouvelle coupe ! ",
+            "tags": [
+                "Paola"
+            ],
+            "timestamp": "2025-12-18 06:00"
+        }
+    ]
+}
