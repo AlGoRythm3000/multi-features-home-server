@@ -13,6 +13,21 @@ body {
     padding: 20px;
 }
 
+/* Bouton de suppression (croix) */
+.delete-btn {
+    float: right;
+    color: #999;
+    text-decoration: none;
+    font-size: 1.5em;
+    line-height: 0.5;
+    margin-left: 10px;
+    padding: 5px;
+}
+.delete-btn:hover {
+    color: #e74c3c; /* Rouge au survol */
+}
+
+
 .tag-user {
     background-color: #ffeba7;
     color: #8a6d3b;
@@ -85,25 +100,177 @@ button {
 button:hover { background-color: #357abd; }
 
 /* --- SECTION LISTE PEPITES --- */
-.reco-list { display: flex; flex-direction: column; gap: 15px; }
-
+/* --- CARTES (Agenda et Pépites) --- */
 .reco-card {
     background: var(--card-bg);
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-left: 5px solid var(--primary);
+    padding: 10px 15px; /* Padding réduit pour être plus fin */
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-left: 5px solid #ccc;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start; /* Aligné en haut */
+    gap: 10px;
+    margin-bottom: 10px; /* Espace entre les cartes réduit */
 }
 
-.reco-content h3 { margin: 0 0 5px 0; font-size: 1.1em; }
-.reco-meta { font-size: 0.85em; color: #666; }
-.tag { background: #eef2f5; padding: 2px 8px; border-radius: 4px; font-weight: bold; color: var(--primary); }
-.reco-link { color: var(--primary); text-decoration: none; font-weight: bold; }
+.reco-card.blue-border { border-left-color: var(--primary); }
+.reco-card.orange-border { border-left-color: #e67e22; }
 
-/* Mobile : on empile tout */
+.reco-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Petit espace entre la ligne titre et la ligne desc */
+}
+
+/* Ligne du haut : Titre + Date + Auteur */
+.card-header {
+    display: flex;
+    align-items: baseline; /* Aligner le texte proprement */
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.card-date {
+    font-size: 0.85em;
+    color: #888;
+    font-weight: normal;
+}
+
+/* Ligne du bas : Description + Tags */
+.card-body {
+    font-size: 0.95em;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.reco-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Bouton de suppression compact */
+.delete-btn {
+    color: #ccc;
+    font-size: 1.2em;
+    line-height: 1;
+    padding: 2px;
+    margin-top: 2px; /* Petit ajustement optique */
+}
+.delete-btn:hover { color: #e74c3c; }
+
+/* Le conteneur de la ligne */
+.reco-content-row {
+    display: flex;
+    align-items: center; /* Aligne tout verticalement au centre */
+    width: 100%;
+    gap: 15px; /* Espace entre les colonnes */
+}
+
+/* Colonne 1 : Date / Auteur (fixe à gauche) */
+.row-date {
+    flex: 0 0 100px; /* Largeur fixe pour que ce soit bien aligné */
+    font-size: 0.85em;
+    color: #666;
+    line-height: 1.2;
+    text-align: right;
+    border-right: 1px solid #eee; /* Petit séparateur visuel */
+    padding-right: 10px;
+}
+
+/* Colonne 2 : Le contenu principal (Titre + Desc) */
+.row-main {
+    flex: 1; /* C'est LUI qui mange le "blanc" au milieu */
+    display: flex;
+    align-items: baseline; /* Aligne le texte sur la ligne d'écriture */
+    gap: 10px;
+    flex-wrap: wrap; /* Permet de passer à la ligne si écran trop petit */
+}
+
+/* Le titre */
+.row-main strong {
+    font-size: 1.1em;
+    color: #333;
+}
+
+/* La description */
+.row-desc {
+    color: #777;
+    font-style: italic;
+    font-size: 0.95em;
+}
+
+/* Colonne 3 : Les Tags (tout à droite avant la croix) */
+.row-tags {
+    display: flex;
+    gap: 5px;
+}
+
+/* Style des tags complets */
+.mini-tag {
+    background-color: #ffeba7;
+    color: #8a6d3b;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    white-space: nowrap; /* Empêche de couper un prénom en deux */
+    font-weight: bold;
+}
+
+/* Ajustement Mobile : Si l'écran est petit, on ré-empile proprement */
 @media (max-width: 600px) {
-    .reco-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .reco-content-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .row-date {
+        text-align: left;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+        padding-bottom: 5px;
+    }
+}
+
+
+
+/* --- ACCORDÉON (Replier SEULEMENT la liste) --- */
+details {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    background: transparent; /* Plus de fond blanc sur le conteneur global */
+    box-shadow: none; /* Plus d'ombre sur le conteneur global */
+    padding: 0;
+}
+
+summary {
+    cursor: pointer;
+    font-size: 0.9em; /* Plus discret */
+    color: #666;
+    padding: 5px 0;
+    user-select: none;
+    outline: none;
+}
+
+summary::before {
+    content: '';
+    font-size: 0.8em;
+    margin-right: 5px;
+    display: inline-block;
+    transition: transform 0.2s;
+}
+details[open] summary::before {
+    transform: rotate(90deg);
 }

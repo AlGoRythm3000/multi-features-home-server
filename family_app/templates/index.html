@@ -3,105 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site de la maison</title>
+    <title>Site de la famille</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <div class="container">
     
-    <h1>Bienvenue à la Maison 🏠</h1>
+    <h1>Bienvenue dans le serveur de la famille 🏠</h1>
 
     <div class="services-grid">
         <a href="http://rock-4d-spi.local:2283" class="service-card immich">
             <span class="service-icon">📸</span>
-            <h3>Photos</h3>
-            <p>Immich</p>
-        </a>
+            <h3>Album photo partagé</h3>
+            <p>Base de donnée locale pour mettre en commun nos photos</p>
+	</a>
 
         <a href="http://rock-4d-spi.local:9925" class="service-card mealie">
             <span class="service-icon">🍲</span>
             <h3>Cuisine</h3>
-            <p>Recettes & Courses</p>
-        </a>
-
-        <a>
-            <span class="service-icon">📰</span>
-            <h3>Agenda partagé</h3>
-            <p>en travaux ...</p>
+            <p>Recettes et courses à faire</p>
         </a>
     </div>
 
-    <h2>Le mur des pépites ✨</h2>
-    
+    <h2>Agenda partagé</h2>
+
+    <div class="add-box" style="border-left: 5px solid #e67e22;">
+        <form action="/add_event" method="POST">
+            <div class="form-row" style="align-items: center;">
+                <input type="date" name="date" required style="flex: 0 0 auto; width: 130px;">
+                <input type="time" name="heure" required style="flex: 0 0 auto; width: 90px;">
+                <input type="text" name="titre" placeholder="Quoi ?" required style="font-weight: bold;">
+                <input type="text" name="desc" placeholder="Détails..." style="flex: 2;">
+            </div>
+
+            <div class="form-row" style="align-items: center; margin-top: 5px; font-size: 0.9em;">
+                <span style="margin-right: 10px; font-weight: bold; color: #555;">Pour :</span>
+                {% for user in users %}
+                <label style="margin-right: 10px; cursor: pointer;">
+                    <input type="checkbox" name="tags" value="{{ user }}"> {{ user }}
+                </label>
+                {% endfor %}
+                <button type="submit" style="background-color: #e67e22; padding: 5px 15px; margin-left: auto;">Ajouter</button>
+            </div>
+        </form>
+    </div>
+
+    <details open>
+        <summary>Voir les événements à venir</summary>
+
+        <div class="reco-list">
+            {% for event in agenda %}
+            <div class="reco-card compact orange-border">
+
+                <div class="reco-content-row">
+                    <div class="row-date">
+                        {{ event.date.split('-')[2] }}/{{ event.date.split('-')[1] }} <small>{{ event.heure }}</small>
+                    </div>
+
+                    <div class="row-main">
+                        <strong>{{ event.titre }}</strong>
+                        {% if event.desc %}
+                            <span class="row-desc">- {{ event.desc }}</span>
+                        {% endif %}
+                    </div>
+
+                    {% if event.tags %}
+                    <div class="row-tags">
+                        {% for tag in event.tags %}
+                            <span class="mini-tag">@{{ tag }}</span> {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <a href="/delete/agenda/{{ event.id }}" class="delete-btn compact-btn" onclick="return confirm('Supprimer ?')">×</a>
+
+            </div>
+            {% else %}
+                <p style="text-align: center; color: #ccc; font-style: italic; margin-top: 10px;">Rien de prévu</p>
+            {% endfor %}
+        </div>
+    </details>
+
+    <h2>Le mur des pépites</h2>
+
     <div class="add-box">
         <form action="/add_reco" method="POST">
-              <div class="form-row">
-                <select name="auteur" required style="flex: 0 0 150px;">
-                    <option value="" disabled selected>C'est qui ?</option>
+             <div class="form-row" style="align-items: center;">
+                <select name="auteur" required style="width: 100px;">
+                    <option value="" disabled selected>Qui ?</option>
                     {% for user in users %}
                         <option value="{{ user }}">{{ user }}</option>
                     {% endfor %}
                 </select>
-
-                <select name="type" style="flex: 0 0 120px;">
-                    <option value="Film">?? Film</option>
-                    <option value="Série">?? Série</option>
-                    <option value="Expo">?? Expo</option>
-                    <option value="Livre">?? Livre</option>
-                    <option value="Article">?? Article</option>
-                    <option value="Autre">?? Autre</option>
+                <select name="type" style="width: 100px;">
+                    <option value="Film">Film</option>
+                    <option value="Série">Série</option>
+                    <option value="Expo">Expo</option>
+                    <option value="Livre">Livre</option>
+                    <option value="Autre">Autre</option>
                 </select>
-                <input type="text" name="titre" placeholder="Titre..." required>
+                <input type="text" name="titre" placeholder="Titre..." required style="font-weight: bold;">
             </div>
-
-            <div class="form-row">
-                <input type="url" name="lien" placeholder="Lien http://... (optionnel)">
-                <input type="text" name="desc" placeholder="Pourquoi c'est bien ?">
+            <div class="form-row" style="margin-top: 5px;">
+                <input type="text" name="desc" placeholder="Pourquoi c'est bien ? (Optionnel)" style="flex: 2;">
+                <input type="url" name="lien" placeholder="Lien..." style="flex: 1;">
+                 <button type="submit" style="padding: 5px 15px;">Partager</button>
             </div>
-
-            <div class="form-row" style="align-items: center; background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #ddd;">
-                <span style="margin-right: 10px; font-weight: bold; color: #555;">Pour qui ? :</span>
+            <div class="form-row" style="font-size: 0.9em; margin-top: 5px;">
+                <span style="margin-right: 10px; font-weight: bold; color: #555;">Pour :</span>
                 {% for user in users %}
-                <label style="margin-right: 15px; cursor: pointer;">
+                <label style="margin-right: 10px;">
                     <input type="checkbox" name="tags" value="{{ user }}"> {{ user }}
                 </label>
                 {% endfor %}
-                <button type="submit" style="margin-left: auto;">Partager</button>
             </div>
-
-	</form>
+        </form>
     </div>
 
-    <div class="reco-list">
-        {% for reco in recos %}
-        <div class="reco-card">
-            <div class="reco-content">
-                <div class="reco-meta">
-                    <span class="tag">{{ reco.type }}</span> 
-                    proposé par <strong>{{ reco.auteur }}</strong> le {{ reco.date_display }}
-                </div>
-                <h3>
-                    {% if reco.lien %}
-                        <a href="{{ reco.lien }}" target="_blank" class="reco-link">{{ reco.titre }} 🔗</a>
-                    {% else %}
-                        {{ reco.titre }}
+    <details open>
+        <summary>Voir les recommandations</summary>
+
+        <div class="reco-list">
+            {% for reco in recos %}
+            <div class="reco-card compact blue-border">
+
+                <div class="reco-content-row">
+                    <div class="row-date" style="width: 90px;">
+                       <span style="font-weight: bold;">{{ reco.auteur }}</span><br>
+                       <small>{{ reco.type }}</small>
+                    </div>
+
+                    <div class="row-main">
+                        <strong>
+                            {% if reco.lien %}
+                                <a href="{{ reco.lien }}" target="_blank" style="color:var(--primary);">{{ reco.titre }}</a>
+                            {% else %}
+                                {{ reco.titre }}
+                            {% endif %}
+                        </strong>
+                        {% if reco.desc %}
+                            <span class="row-desc">- "{{ reco.desc }}"</span>
+                        {% endif %}
+                    </div>
+
+                    {% if reco.tags %}
+                    <div class="row-tags">
+                        {% for tag in reco.tags %}
+                            <span class="mini-tag">@{{ tag }}</span>
+                        {% endfor %}
+                    </div>
                     {% endif %}
-                </h3>
-                {% if reco.tags %}
-                <div style="margin-top: 5px;">
-                    {% for tag in reco.tags %}
-                        <span class="tag-user">@{{ tag }}</span>
-                    {% endfor %}
                 </div>
-                {% endif %}
-                {% if reco.desc %}
-                    <p style="margin: 5px 0 0 0; font-style: italic;">"{{ reco.desc }}"</p>
-                {% endif %}
+
+                <a href="/delete/recos/{{ reco.id }}" class="delete-btn compact-btn" onclick="return confirm('Supprimer ?')">×</a>
+
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    </details>
+
 
 </div>
 

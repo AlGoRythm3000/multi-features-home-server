@@ -1,3 +1,4 @@
+import uuid
 from flask import Flask, render_template, request, redirect
 import json
 import os
@@ -6,17 +7,19 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 DATA_FILE = 'data.json'
 
+# --- GESTION DES DONNEES ---
 def load_data():
+    # Si le fichier n'existe pas, on retourne un DICTIONNAIRE vide
     if not os.path.exists(DATA_FILE):
-        return []
+        return {} 
     with open(DATA_FILE, 'r') as f:
         try:
             data = json.load(f)
-            # Vérification de sécurité si le fichier est vide ou corrompu
-            if not isinstance(data, list): return []
+            # On vérifie que c'est bien un dictionnaire
+            if not isinstance(data, dict): return {}
             return data
         except:
-            return []
+            return {}
 
 def save_data(data):
     with open(DATA_FILE, 'w') as f:
@@ -28,33 +31,49 @@ def load_users():
     with open('users.json', 'r') as f:
         return json.load(f)
 
-
-# Fonction pour nettoyer les pépites vieilles de plus de 3 mois (90 jours)
-def clean_old_entries(data):
+def clean_old_entries(data_list):
+    # Cette fonction nettoie une LISTE spécifique (recos ou agenda)
+    if not isinstance(data_list, list): return []
+    
     now = datetime.now()
     cutoff = now - timedelta(days=90)
-    # On garde seulement les éléments dont la date est plus récente que le cutoff
-    # On doit convertir la string 'date' en objet datetime pour comparer
     cleaned_data = []
-    for item in data:
+    
+    for item in data_list:
         try:
-            item_date = datetime.strptime(item['date_obj'], "%Y-%m-%d %H:%M:%S")
-            if item_date > cutoff:
+            # On vérifie si la clé existe
+            if 'date_obj' in item:
+                item_date = datetime.strptime(item['date_obj'], "%Y-%m-%d %H:%M:%S")
+                if item_date > cutoff:
+                    cleaned_data.append(item)
+            else:
                 cleaned_data.append(item)
-        except KeyError:
-            # Si format date incompatible, on garde par sécurité (ou on supprime)
+        except Exception:
             pass
     return cleaned_data
 
+# --- ROUTE ACCUEIL ---
 @app.route('/')
 def index():
     data = load_data()
     users = load_users()
-    # On nettoie les vieux posts à chaque chargement de page
-    data = clean_old_entries(data)
-    save_data(data) # On sauvegarde le nettoyage
-    return render_template('index.html', recos=data, users = users)
+    
+    # On récupère les listes, ou des listes vides si elles n'existent pas encore
+    recos = data.get('recos', [])
+    agenda = data.get('agenda', [])
 
+    # Nettoyage des vieilles pépites
+    recos = clean_old_entries(recos)
+
+    # Mise à jour et sauvegarde
+    data['recos'] = recos
+    data['agenda'] = agenda
+    save_data(data)
+    
+    # IMPORTANT : On envoie bien 'recos' (la liste) et pas 'data' (le gros dico)
+    return render_template('index.html', recos=recos, agenda=agenda, users=users)
+
+# --- AJOUTER PEPITE ---
 @app.route('/add_reco', methods=['POST'])
 def add_reco():
     titre = request.form.get('titre')
@@ -62,26 +81,73 @@ def add_reco():
     auteur = request.form.get('auteur')
     lien = request.form.get('lien')
     desc = request.form.get('desc')
-    tags = request.form.getlist('tags')    
-
+    tags = request.form.getlist('tags')
+    
     if titre and auteur:
         data = load_data()
         now = datetime.now()
         nouvelle_reco = {
+            "id": str(uuid.uuid4()),
             "titre": titre,
             "type": type_reco,
             "auteur": auteur,
             "lien": lien,
             "desc": desc,
-	    "tags": tags,
-            "date_display": now.strftime("%d/%m/%Y"), # Pour l'affichage
-            "date_obj": now.strftime("%Y-%m-%d %H:%M:%S") # Pour le tri technique
+            "tags": tags,
+            "date_display": now.strftime("%d/%m/%Y"),
+            "date_obj": now.strftime("%Y-%m-%d %H:%M:%S")
         }
-        data.insert(0, nouvelle_reco)
+        
+        # Si la clé n'existe pas, on crée la liste
+        if 'recos' not in data: data['recos'] = []
+        
+        # On insère DANS la liste 'recos', pas dans data
+        data['recos'].insert(0, nouvelle_reco)
         save_data(data)
     
     return redirect('/')
 
+# --- AJOUTER AGENDA ---
+@app.route('/add_event', methods=['POST'])
+def add_event():
+    titre = request.form.get('titre')
+    date_event = request.form.get('date') 
+    heure_event = request.form.get('heure') 
+    desc = request.form.get('desc')
+    tags = request.form.getlist('tags')
+    
+    if titre and date_event:
+        data = load_data()
+        nouvel_event = {
+            "id": str(uuid.uuid4()),
+            "titre": titre,
+            "date": date_event,
+            "heure": heure_event,
+            "desc": desc,
+            "tags": tags,
+            "timestamp": f"{date_event} {heure_event}" 
+        }
+        
+        if 'agenda' not in data: data['agenda'] = []
+        data['agenda'].append(nouvel_event)
+        
+        # Tri chronologique
+        data['agenda'].sort(key=lambda x: x['timestamp'])
+        
+        save_data(data)
+    
+    return redirect('/')
+
+# --- SUPPRESSION ---
+@app.route('/delete/<item_type>/<item_id>')
+def delete_item(item_type, item_id):
+    data = load_data()
+    # item_type est soit 'recos' soit 'agenda'
+    if item_type in data and isinstance(data[item_type], list):
+        # On filtre la liste pour garder tout sauf l'ID ciblé
+        data[item_type] = [item for item in data[item_type] if item.get('id') != item_id]
+        save_data(data)
+    return redirect('/')
+
 if __name__ == '__main__':
-    # Le host 0.0.0.0 permet d'être accessible depuis le réseau local
     app.run(host='0.0.0.0', port=5000)
