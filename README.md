@@ -29,7 +29,7 @@ It acts as a central hub connecting self-hosted services (like Immich and Mealie
 ## Screenshots
 
 ### Main dashboard
-![Main page](screenshots/main_page.png)
+![Main page](family_app/screenshots/main_page.png)
 
 ## Tech stack
 
