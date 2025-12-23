@@ -1,16 +1,28 @@
 {
-    "recos": [],
+    "recos": [
+        {
+            "id": "e229cc6c-35a4-47a3-b71a-f0afc9fda02e",
+            "titre": "Les choux de Bruxelles sont cuits",
+            "type": "Livre",
+            "auteur": "Paola",
+            "lien": "https://www.fnac.com/a21115778/Nicolas-Sarkozy-Le-journal-d-un-prisonnier",
+            "desc": "Super dr\u00f4le",
+            "tags": [
+                "Papa"
+            ],
+            "date_display": "23/12/2025",
+            "date_obj": "2025-12-23 17:11:16"
+        }
+    ],
     "agenda": [
         {
-            "id": "12343e90-e4cd-4722-8b85-cecbdf23a7f7",
-            "titre": "rdv coiffeur",
-            "date": "2025-12-18",
-            "heure": "06:00",
-            "desc": "nouvelle coupe ! ",
-            "tags": [
-                "Paola"
-            ],
-            "timestamp": "2025-12-18 06:00"
+            "id": "e9406c3b-fa7c-4c61-9146-927240b7613c",
+            "titre": "Go\u00fbter chez les Martin ",
+            "date": "2026-10-01",
+            "heure": "12:03",
+            "desc": "Apporter un g\u00e2teau",
+            "tags": [],
+            "timestamp": "2026-10-01 12:03"
         }
     ]
 }
