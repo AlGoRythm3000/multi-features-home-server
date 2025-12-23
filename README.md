@@ -19,7 +19,7 @@ It acts as a central hub connecting self-hosted services (like Immich and Mealie
 
 ### "Le mur des pépites" (the *wall of gems*)
 * **Recommendation system:** share movies, books, exhibitions, or articles with the family.
-* **Rich details:** add links, descriptions, and categories (Film, Series, Expo...).
+* **Rich details:** add links, descriptions, and categories (film, series, exhibition...).
 * **Expiration:** automatic cleanup of old recommendations (> 90 days) to keep the list fresh.
 
 ## Integrations
