@@ -2,7 +2,7 @@
 
 A lightweight, self-hosted dashboard designed to run on Radxa, Orange or Raspberry Pi (I ran it on a Radxa Rock 4D. This project centralizes people's activities, photos, and meal planning in a modern, responsive interface.
 
-It acts as a central hub connecting self-hosted services (like Immich and Mealie) with custom-built features like a shared agenda and a recommendation wall ("Le Mur des Pépites").
+It acts as a central hub connecting self-hosted services (like [Immich](https://immich.app/) and [Mealie](https://mealie.io/)) with custom-built features like a shared agenda and a recommendation wall ("Le Mur des Pépites").
 
 ## Features
 
