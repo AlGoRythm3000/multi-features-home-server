@@ -8,9 +8,22 @@
 </head>
 <body>
 
+<div class="top-bar">
+    <div class="user-info">Bonjour, <strong>{{ current_user }}</strong> 👋</div>
+    
+    <div class="dropdown">
+        <button class="dropbtn">☰</button>
+        <div class="dropdown-content">
+            <a href="{{ url_for('auth.change_password') }}">🔐 Changer mot de passe</a>
+            <a href="{{ url_for('auth.logout') }}" style="color: #e74c3c;">🚪 Déconnexion</a>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     
-    <h1>Bienvenue dans le serveur de la famille 🏠</h1>
+    <h1>Bienvenue sur le serveur de la famille 🏠</h1>
 
     <div class="services-grid">
         <a href="http://rock-4d-spi.local:2283" class="service-card immich">

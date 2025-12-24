@@ -1,15 +1,23 @@
-# Ignorer les données de base de données
+# ignoring the database
 postgres-data/
 
-# Ignorer les photos uploadées
+# ignoring the uploaded photos
 library/
 uploads/
 
-# Ignorer les fichiers de configuration secrets (mots de passe)
+# ignoring the secret config files (passwords)
 .env
 
-# Ignorer les fichiers systèmes
+# ignoring the system files
 .DS_Store
 
-# ignorer le postgres (la bdd de photo)
+# ignoring postgres
 postgres/ 
+
+# ignoring the names of the users
+users.json
+
+#ignoring cache 
+__pycache__/
+*.pyc
+mealie/mealie-data/

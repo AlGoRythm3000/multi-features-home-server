@@ -1,0 +1,20 @@
+services:
+  mealie:
+    image: hkotel/mealie:v1.0.0
+    container_name: mealie
+    ports:
+      - "9925:9000"  # On accèdera via le port 9925
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - ./mealie-data:/app/data/
+    environment:
+      # Laisse ça tel quel pour l'instant
+      ALLOW_SIGNUP: "true"
+      PUID: 1000
+      PGID: 1000
+      TZ: Europe/Paris
+      BASE_URL: http://rock-4d-spi.local:9925
+    restart: always

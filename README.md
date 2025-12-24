@@ -65,5 +65,21 @@ It acts as a central hub connecting self-hosted services (like [Immich](https://
 4.  **Access:**
     Open your browser and go to `http://YOUR_PI_IP` or `http://rock-4d-spi.local`.
 
+### Adding a hashed password in your users.json file
+
+The following command will generate the hashed text of the password '1234' (or any other password) : 
+```bash
+docker exec -it family-app python -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('1234'))"
+```
+Then you can just copy it in your users.json file that should look like this : 
+```json
+{
+username1: "<hashed password>",
+username2: "<hashed password>", 
+username3: "<hashed password>"
+}
+```
+The *hashed password* start with : scrypt:32768:8:1$. 
 ---
-*Version v1.0.0*
+*Version v1.1.0*
+

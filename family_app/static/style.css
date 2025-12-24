@@ -274,3 +274,69 @@ summary::before {
 details[open] summary::before {
     transform: rotate(90deg);
 }
+
+
+/* --- TOP BAR & MENU --- */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    /* Pour coller aux bords si le body a du padding */
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: -20px; 
+}
+
+.user-info {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Le conteneur du bouton */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Le bouton hamburger */
+.dropbtn {
+    background-color: transparent;
+    color: #333;
+    padding: 5px 10px;
+    font-size: 1.5em;
+    border: none;
+    cursor: pointer;
+}
+
+/* Le contenu caché du menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Les liens dans le menu */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+/* Afficher le menu au survol (simple et efficace) */
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {color: var(--primary);}
