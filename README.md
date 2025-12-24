@@ -79,7 +79,8 @@ username2: "<hashed password>",
 username3: "<hashed password>"
 }
 ```
-The *hashed password* start with : scrypt:32768:8:1$. 
+The *hashed passwords* start with : scrypt:32768:8:1$. 
+
 ---
 *Version v1.1.0*
 
